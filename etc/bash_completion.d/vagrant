@@ -626,20 +626,20 @@ __vagrant(){
                         ;;
 
                     update)
-                        if [[ $prev =~ ^(--box|--provider)$ ]]; then
-                            return 0
+                        if [[ $prev =~ --box ]]; then
+                            :
                         elif [[ $prev = --provider ]]; then
                             __vagrant_complete_providers
                             return $?
+                        else
+                            __vagrant_complete --box --provider
+                            return $?
                         fi
-
-                        __vagrant_complete --box --provider
-                        return $?
                         ;;
 
                 esac
 
-                if [[ $subaction =~ ^(remove|repackage)$ ]]; then
+                if [[ $subaction =~ ^(remove|repackage|update)$ ]]; then
                     local box_list=''
 
                     box_list=$(__vagrant_get_boxes) || return 1
