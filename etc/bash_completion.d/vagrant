@@ -270,14 +270,32 @@ __vagrant_get_words(){
 # accept options as arguments and output unused options
 __vagrant_list_options(){
 
-    local opt opts=()
+    local arg args=()
 
-    for opt in "$@"; do
-        __vagrant_test_option "$opt" || opts+=("$opt")
+    for arg in "$@"; do
+
+        for option in "${options[@]}"; do
+            [[ $option = "$arg" ]] && continue 2
+        done
+
+        args+=("$arg")
+
     done
 
-    echo "${opts[@]}"
+    echo "${args[@]}"
 }
+
+# # accept options as arguments and output unused options
+# __vagrant_list_options(){
+
+#     local opt opts=()
+
+#     for opt in "$@"; do
+#         __vagrant_test_option "$opt" || opts+=("$opt")
+#     done
+
+#     echo "${opts[@]}"
+# }
 
 __vagrant_print_box_commands(){
     printf '%s\n' add help list outdated remove repackage update
@@ -298,17 +316,17 @@ __vagrant_print_snapshot_commands(){
     printf '%s\n' back delete go list take
 }
 
-# accept option as argument and return successfully if option has already been used
-__vagrant_test_option(){
+# # accept option as argument and return successfully if option has already been used
+# __vagrant_test_option(){
 
-    local option
+#     local option
 
-    for option in "${options[@]}"; do
-        [[ $option = "$1" ]] && return 0
-    done
+#     for option in "${options[@]}"; do
+#         [[ $option = "$1" ]] && return 0
+#     done
 
-    return 1
-}
+#     return 1
+# }
 
 __vagrant(){
 
