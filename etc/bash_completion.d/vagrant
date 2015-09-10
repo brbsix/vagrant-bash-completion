@@ -234,6 +234,20 @@ __vagrant_get_subcommands(){
     echo "$vagrant_subcommands"
 }
 
+__vagrant_get_versions(){
+
+    local vagrant_output='' vagrant_versions=''
+
+    # local must be declared beforehand in order to return an accurate exit status here
+    vagrant_output=$(vagrant box list 2>/dev/null) || return 1
+
+    vagrant_versions=$(awk '{sub(")$", "", $NF); print $NF}' <<<"$vagrant_output")
+
+    [[ -z $vagrant_versions ]] && return 1
+
+    echo "$vagrant_versions"
+}
+
 __vagrant_get_vms(){
 
     local vagrant_output='' vagrant_vms=''
@@ -618,11 +632,22 @@ __vagrant(){
                         ;;
 
                     remove)
-                        [[ $prev =~ ^(--box-version|--provider)$ ]] && return 0
+                        if [[ $prev = --box-version ]]; then
+                            local __vagrant_versions=''
+
+                            __vagrant_versions=$(__vagrant_get_versions) || return 1
+
+                            readarray -t COMPREPLY < <(compgen -W "$__vagrant_versions" -- "$cur")
+
+                            return 0
+                        elif [[ $prev = --provider ]]; then
+                            __vagrant_complete_providers
+                            return $?
+                        fi
 
                         local remove_options=''
 
-                        remove_options=$(__vagrant_list_options -f --force -m --minimal --output)
+                        remove_options=$(__vagrant_list_options --box-version -f --force --provider)
                         ;;
 
                     update)
