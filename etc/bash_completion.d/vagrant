@@ -28,7 +28,19 @@
 hash vagrant &>/dev/null && {
 
 # static completions are much faster but less accurate
-__vagrant_static_completion=1
+__VAGRANT_STATIC_COMPLETION=1
+
+# store static completions
+__VAGRANT_COMMANDS=(box connect destroy docker-logs docker-run global-status
+    halt help init list-commands login package plugin provision push rdp
+    reload resume rsync rsync-auto share snapshot ssh ssh-config status
+    suspend up version)
+
+__VAGRANT_BOX_COMMANDS=(add help list outdated remove repackage update)
+
+__VAGRANT_PLUGIN_COMMANDS=(install license list uninstall update)
+
+__VAGRANT_SNAPSHOT_COMMANDS=(back delete go list take)
 
 __vagrant_complete(){
     local command_options=''
@@ -374,8 +386,8 @@ __vagrant(){
 
     if (( ${#words[@]} == 1 )); then
 
-        if (( $__vagrant_static_completion == 1 )); then
-            readarray -t COMPREPLY < <(compgen -W "$(__vagrant_print_commands)" -- "$cur")
+        if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+            readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_COMMANDS[*]}" -- "$cur")
             return 0
         fi
 
@@ -393,8 +405,8 @@ __vagrant(){
         case "$action" in
 
             box)
-                if (( $__vagrant_static_completion == 1 )); then
-                    readarray -t COMPREPLY < <(compgen -W "$(__vagrant_print_box_commands)" -- "$cur")
+                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                    readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_BOX_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
 
@@ -489,8 +501,8 @@ __vagrant(){
                 ;;
 
             help)
-                if (( $__vagrant_static_completion == 1 )); then
-                    readarray -t COMPREPLY < <(compgen -W "$(__vagrant_print_commands)" -- "$cur")
+                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                    readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
 
@@ -535,7 +547,7 @@ __vagrant(){
 
             plugin)
                 if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
-                    readarray -t COMPREPLY < <(compgen -W "$(__vagrant_print_plugin_commands)" -- "$cur")
+                    readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_PLUGIN_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
 
@@ -574,8 +586,8 @@ __vagrant(){
                 ;;
 
             snapshot)
-                if (( $__vagrant_static_completion == 1 )); then
-                    readarray -t COMPREPLY < <(compgen -W "$(__vagrant_print_snapshot_commands)" -- "$cur")
+                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                    readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_SNAPSHOT_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
 
