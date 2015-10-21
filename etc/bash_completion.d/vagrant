@@ -534,8 +534,8 @@ __vagrant(){
                 ;;
 
             plugin)
-                if (( $__vagrant_static_completion == 1 )); then
-                    readarray -t COMPREPLY < <(compgen -W "$__vagrant_print_plugin_commands" -- "$cur")
+                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                    readarray -t COMPREPLY < <(compgen -W "$(__vagrant_print_plugin_commands)" -- "$cur")
                     return 0
                 fi
 
