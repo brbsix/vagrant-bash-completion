@@ -205,6 +205,17 @@ __vagrant_get_options(){
     return 0
 }
 
+__vagrant_get_plugins(){
+
+    local vagrant_plugins=''
+
+    vagrant_plugins=$(vagrant plugin list 2>/dev/null | awk '{print $1}')
+
+    [[ -z $vagrant_plugins ]] && return 1
+
+    echo "$vagrant_plugins"
+}
+
 __vagrant_get_snapshots(){
 
     local vagrant_output='' vagrant_snapshots=''
@@ -684,6 +695,15 @@ __vagrant(){
                                            --plugin-source --plugin-version \
                                            --verbose
                         return $?
+                        ;;
+                    uninstall|update)
+                        local plugin_list=''
+
+                        plugin_list=$(__vagrant_get_plugins) || return 1
+
+                        readarray -t COMPREPLY < <(compgen -W "$plugin_list" -- "$cur")
+
+                        return 0
                         ;;
                 esac
                 ;;
