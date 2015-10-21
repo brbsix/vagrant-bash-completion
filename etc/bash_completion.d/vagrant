@@ -322,49 +322,6 @@ __vagrant_list_options(){
     echo "${args[@]}"
 }
 
-# # accept options as arguments and output unused options
-# __vagrant_list_options(){
-
-#     local opt opts=()
-
-#     for opt in "$@"; do
-#         __vagrant_test_option "$opt" || opts+=("$opt")
-#     done
-
-#     echo "${opts[@]}"
-# }
-
-__vagrant_print_box_commands(){
-    printf '%s\n' add help list outdated remove repackage update
-}
-
-__vagrant_print_commands(){
-    printf '%s\n' box connect destroy docker-logs docker-run global-status \
-        halt help init list-commands login package plugin provision push rdp \
-        reload resume rsync rsync-auto share snapshot ssh ssh-config status \
-        suspend up version
-}
-
-__vagrant_print_plugin_commands(){
-    printf '%s\n' install license list uninstall update
-}
-
-__vagrant_print_snapshot_commands(){
-    printf '%s\n' back delete go list take
-}
-
-# # accept option as argument and return successfully if option has already been used
-# __vagrant_test_option(){
-
-#     local option
-
-#     for option in "${options[@]}"; do
-#         [[ $option = "$1" ]] && return 0
-#     done
-
-#     return 1
-# }
-
 __vagrant(){
 
     local action='' cur='' options=() subaction='' words=()
