@@ -28,7 +28,19 @@
 hash vagrant &>/dev/null && {
 
 # static completions are much faster but less accurate
-__vagrant_static_completion=1
+__VAGRANT_STATIC_COMPLETION=1
+
+# store static completions
+__VAGRANT_COMMANDS=(box connect destroy docker-logs docker-run global-status
+    halt help init list-commands login package plugin provision push rdp
+    reload resume rsync rsync-auto share snapshot ssh ssh-config status
+    suspend up version)
+
+__VAGRANT_BOX_COMMANDS=(add help list outdated remove repackage update)
+
+__VAGRANT_PLUGIN_COMMANDS=(install license list uninstall update)
+
+__VAGRANT_SNAPSHOT_COMMANDS=(back delete go list take)
 
 __vagrant_complete(){
     local command_options=''
@@ -205,6 +217,17 @@ __vagrant_get_options(){
     return 0
 }
 
+__vagrant_get_plugins(){
+
+    local vagrant_plugins=''
+
+    vagrant_plugins=$(vagrant plugin list 2>/dev/null | awk '{print $1}')
+
+    [[ -z $vagrant_plugins ]] && return 1
+
+    echo "$vagrant_plugins"
+}
+
 __vagrant_get_snapshots(){
 
     local vagrant_output='' vagrant_snapshots=''
@@ -299,49 +322,6 @@ __vagrant_list_options(){
     echo "${args[@]}"
 }
 
-# # accept options as arguments and output unused options
-# __vagrant_list_options(){
-
-#     local opt opts=()
-
-#     for opt in "$@"; do
-#         __vagrant_test_option "$opt" || opts+=("$opt")
-#     done
-
-#     echo "${opts[@]}"
-# }
-
-__vagrant_print_box_commands(){
-    printf '%s\n' add help list outdated remove repackage update
-}
-
-__vagrant_print_commands(){
-    printf '%s\n' box connect destroy docker-logs docker-run global-status \
-        halt help init list-commands login package plugin provision push rdp \
-        reload resume rsync rsync-auto share snapshot ssh ssh-config status \
-        suspend up version
-}
-
-__vagrant_print_plugin_commands(){
-    printf '%s\n' install license list uninstall update
-}
-
-__vagrant_print_snapshot_commands(){
-    printf '%s\n' back delete go list take
-}
-
-# # accept option as argument and return successfully if option has already been used
-# __vagrant_test_option(){
-
-#     local option
-
-#     for option in "${options[@]}"; do
-#         [[ $option = "$1" ]] && return 0
-#     done
-
-#     return 1
-# }
-
 __vagrant(){
 
     local action='' cur='' options=() subaction='' words=()
@@ -363,8 +343,8 @@ __vagrant(){
 
     if (( ${#words[@]} == 1 )); then
 
-        if (( $__vagrant_static_completion == 1 )); then
-            readarray -t COMPREPLY < <(compgen -W "$(__vagrant_print_commands)" -- "$cur")
+        if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+            readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_COMMANDS[*]}" -- "$cur")
             return 0
         fi
 
@@ -382,8 +362,8 @@ __vagrant(){
         case "$action" in
 
             box)
-                if (( $__vagrant_static_completion == 1 )); then
-                    readarray -t COMPREPLY < <(compgen -W "$(__vagrant_print_box_commands)" -- "$cur")
+                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                    readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_BOX_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
 
@@ -478,8 +458,8 @@ __vagrant(){
                 ;;
 
             help)
-                if (( $__vagrant_static_completion == 1 )); then
-                    readarray -t COMPREPLY < <(compgen -W "$(__vagrant_print_commands)" -- "$cur")
+                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                    readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
 
@@ -523,8 +503,8 @@ __vagrant(){
                 ;;
 
             plugin)
-                if (( $__vagrant_static_completion == 1 )); then
-                    readarray -t COMPREPLY < <(compgen -W "$__vagrant_print_plugin_commands" -- "$cur")
+                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                    readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_PLUGIN_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
 
@@ -563,8 +543,8 @@ __vagrant(){
                 ;;
 
             snapshot)
-                if (( $__vagrant_static_completion == 1 )); then
-                    readarray -t COMPREPLY < <(compgen -W "$(__vagrant_print_snapshot_commands)" -- "$cur")
+                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                    readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_SNAPSHOT_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
 
@@ -684,6 +664,15 @@ __vagrant(){
                                            --plugin-source --plugin-version \
                                            --verbose
                         return $?
+                        ;;
+                    uninstall|update)
+                        local plugin_list=''
+
+                        plugin_list=$(__vagrant_get_plugins) || return 1
+
+                        readarray -t COMPREPLY < <(compgen -W "$plugin_list" -- "$cur")
+
+                        return 0
                         ;;
                 esac
                 ;;
