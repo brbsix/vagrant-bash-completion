@@ -1,7 +1,7 @@
 Package: vagrant-bash-completion
 Priority: optional
 Section: shells
-Installed-Size: 4225
+Installed-Size: 38
 Maintainer: Six <brbsix@gmail.com>
 Architecture: all
 Version: 0.0.9
