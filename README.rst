@@ -7,19 +7,25 @@ Debian/Ubuntu
 .. code:: bash
 
     wget -q https://raw.github.com/brbsix/vagrant-bash-completion/master/etc/bash_completion.d/vagrant
-    sudo install -m 0644 vagrant /etc/bash_completion.d/vagrant-test
+    sudo install -m 0644 vagrant /etc/bash_completion.d/vagrant
 
 
 License
 =======
 
 This software is licensed using the MIT License.
-The license is provided in the `source code repository
-<https://github.com/brbsix/vagrant-bash-completion/blob/master/LICENSE>`_.
+The license is provided in the `source code repository`_.
 
 
 Prior Contributors
 ===================
 
-https://github.com/nfedyashev/bash-it/blob/master/plugins/vagrant.plugins.bash
-https://github.com/kura/vagrant-bash-completion/blob/master/etc/bash_completion.d/vagrant
++------------------------+-------------------------------------------------------------------------------------------+
+| `Kura`_                | https://github.com/kura/vagrant-bash-completion/blob/master/etc/bash_completion.d/vagrant |
++------------------------+-------------------------------------------------------------------------------------------+
+| `Nikita Fedyashev`_    | https://github.com/nfedyashev/bash-it/blob/master/plugins/vagrant.plugins.bash            |
++------------------------+-------------------------------------------------------------------------------------------+
+
+.. _source code repository: https://github.com/brbsix/vagrant-bash-completion/blob/master/LICENSE
+.. _Kura: https://github.com/kura
+.. _Nikita Fedyashev: https://github.com/nfedyashev
