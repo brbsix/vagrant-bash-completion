@@ -1,6 +1,8 @@
 Installation
 ============
 
+See `latest release`_ for *.deb* package or choose from one of the following installation methods.
+
 Easy Install
 ------------
 
@@ -20,6 +22,7 @@ To install system-wide, run the following from within the repository:
 
 User Install
 ------------
+
 To install for user, run the following from within the repository:
 
 ``make userinstall``
@@ -32,6 +35,7 @@ Note: You'll need to ensure that *~/.bash_completion.d/vagrant* is sourced in yo
     while IFS= read -r path; do
         . "$path"
     done < <(find "$HOME/.bash_completion.d" -type f)
+
 
 Build Instructions
 ==================
@@ -57,6 +61,7 @@ Prior Contributors
 | `Nikita Fedyashev`_    | https://github.com/nfedyashev/bash-it/blob/master/plugins/vagrant.plugins.bash            |
 +------------------------+-------------------------------------------------------------------------------------------+
 
+.. _latest release: https://github.com/brbsix/vagrant-bash-completion/releases/latest
 .. _source code repository: https://github.com/brbsix/vagrant-bash-completion/blob/master/LICENSE
 .. _Kura: https://github.com/kura
 .. _Nikita Fedyashev: https://github.com/nfedyashev
