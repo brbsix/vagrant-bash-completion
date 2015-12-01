@@ -4,7 +4,7 @@ Section: shells
 Installed-Size: 38
 Maintainer: Six <brbsix@gmail.com>
 Architecture: all
-Version: 0.0.10
+Version: 0.1.0
 Depends: bash-completion (>=1.0)
 Description: vagrant completions for bash
 Homepage: https://github.com/brbsix/vagrant-bash-completion
