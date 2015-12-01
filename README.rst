@@ -11,7 +11,7 @@ To install system-wide without downloading the repository:
 .. code:: bash
 
     wget -q https://raw.github.com/brbsix/vagrant-bash-completion/master/vagrant-bash-completion/etc/bash_completion.d/vagrant
-    sudo install -m 0644 vagrant /etc/bash_completion.d/vagrant
+    sudo install -m 0644 vagrant /etc/bash_completion.d/
 
 System Install
 --------------
