@@ -1,9 +1,6 @@
 Installation
 ============
 
-Debian/Ubuntu
--------------
-
 .. code:: bash
 
     wget -q https://raw.github.com/brbsix/vagrant-bash-completion/master/etc/bash_completion.d/vagrant
