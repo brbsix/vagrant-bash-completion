@@ -343,7 +343,7 @@ __vagrant(){
 
     if (( ${#words[@]} == 1 )); then
 
-        if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+        if (( __VAGRANT_STATIC_COMPLETION == 1 )); then
             readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_COMMANDS[*]}" -- "$cur")
             return 0
         fi
@@ -362,7 +362,7 @@ __vagrant(){
         case "$action" in
 
             box)
-                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                if (( __VAGRANT_STATIC_COMPLETION == 1 )); then
                     readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_BOX_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
@@ -458,7 +458,7 @@ __vagrant(){
                 ;;
 
             help)
-                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                if (( __VAGRANT_STATIC_COMPLETION == 1 )); then
                     readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
@@ -503,7 +503,7 @@ __vagrant(){
                 ;;
 
             plugin)
-                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                if (( __VAGRANT_STATIC_COMPLETION == 1 )); then
                     readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_PLUGIN_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
@@ -543,7 +543,7 @@ __vagrant(){
                 ;;
 
             snapshot)
-                if (( $__VAGRANT_STATIC_COMPLETION == 1 )); then
+                if (( __VAGRANT_STATIC_COMPLETION == 1 )); then
                     readarray -t COMPREPLY < <(compgen -W "${__VAGRANT_SNAPSHOT_COMMANDS[*]}" -- "$cur")
                     return 0
                 fi
