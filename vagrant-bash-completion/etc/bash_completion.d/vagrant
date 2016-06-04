@@ -538,7 +538,9 @@ __vagrant(){
             share)
                 [[ $prev =~ ^(--domain|--http|--https|--name|--ssh-port)$ ]] && return 0
 
-                __vagrant_complete --disable-http --domain --http --https --name --ssh --ssh-no-password --ssh-once --ssh-port
+                __vagrant_complete --disable-http --domain --http \
+                                   --https --name --ssh --ssh-no-password \
+                                   --ssh-once --ssh-port
 
                 return 0
                 ;;
