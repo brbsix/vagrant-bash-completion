@@ -293,10 +293,10 @@ __vagrant_get_words(){
 
     while (( $# > 0 )); do
         # some options consume an argument
-        if [[ $1 =~ ^(--base|--box|--box-version|-c|--cacert|--capath|--cert|--checksum|--checksum-type|--command|--entry-point|--host|--include|--name|--output|--provider|--plugin-source|--plugin-version|--provision-with|-t|--token|--vagrantfile)$ ]]; then
+        if [[ $1 =~ ^(--base|--box|--box-version|-c|--cacert|--capath|--cert|--checksum|--checksum-type|--command|--entry-point|--host|--include|--name|--output|--provider|--plugin-source|--plugin-version|--provision-with|--static-ip|-t|--token|--vagrantfile)$ ]]; then
             shift
-        # some share plugin options consume an argument
-        elif [[ $1 =~ ^(--domain|--http|--https|--name|--ssh-port|--static-ip)$ ]]; then
+        # share plugin options that consume an argument
+        elif [[ $1 =~ ^(--domain|--http|--https|--name|--ssh-port)$ ]]; then
             shift
         elif [[ $1 != -* ]]; then
             echo "$1"
