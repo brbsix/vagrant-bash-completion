@@ -342,6 +342,7 @@ __vagrant(){
     #       __vagrant_box_commands
     #       __vagrant_plugin_commands
     #       __vagrant_snapshot_commands
+    #       __vagrant_virtualbox_vms
 
     if (( ${#words[@]} == 1 )); then
 
@@ -504,11 +505,21 @@ __vagrant(){
 
             package)
                 case $prev in
+                    --base)
+                        # get VirtualBox VMs only if they are not already cached
+                        [[ -z $__vagrant_virtualbox_vms ]] && {
+                            readarray -t __vagrant_virtualbox_vms < <(VBoxManage list vms 2>/dev/null | sed 's/ {.\+}$//')
+                        }
+
+                        readarray -t COMPREPLY < <(compgen -W "${__vagrant_virtualbox_vms[*]}" -- "$cur")
+
+                        return 0
+                        ;;
                     --include|--vagrantfile)
                         _filedir
                         return $?
                         ;;
-                    --base|--output)
+                    --output)
                         return 0
                         ;;
                 esac
