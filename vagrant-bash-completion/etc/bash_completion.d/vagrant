@@ -31,10 +31,10 @@ hash vagrant &>/dev/null && {
 __VAGRANT_STATIC_COMPLETION=1
 
 # store static completions
-__VAGRANT_COMMANDS=(box connect destroy docker-logs docker-run global-status
-    halt help init list-commands login package plugin provision push rdp
-    reload resume rsync rsync-auto share snapshot ssh ssh-config status
-    suspend up version)
+__VAGRANT_COMMANDS=(box cap connect destroy docker-logs docker-run
+    global-status halt help init list-commands login package plugin
+    port powershell provider provision push rdp reload resume rsync
+    rsync-auto share snapshot ssh ssh-config status suspend up version)
 
 __VAGRANT_BOX_COMMANDS=(add list outdated remove repackage update)
 
@@ -66,8 +66,9 @@ __vagrant_complete_providers(){
 __vagrant_complete_provisioners(){
     local provisioners=()
 
-    provisioners=(ansible cfengine chef_apply chef_client chef_solo \
-                  chef_zero docker file puppet puppet_server salt shell)
+    provisioners=(ansible ansible_local cfengine chef_apply \
+                  chef_client chef_solo chef_zero docker file \
+                  puppet puppet_server salt shell)
 
     readarray -t COMPREPLY < <(compgen -W "${provisioners[*]}" -- "$cur")
 
@@ -378,6 +379,12 @@ __vagrant(){
                 return 0
                 ;;
 
+            cap)
+                __vagrant_complete --check
+
+                return $?
+                ;;
+
             connect)
                 [[ $prev = --static-ip ]] && return 0
 
@@ -519,6 +526,28 @@ __vagrant(){
                 return 0
                 ;;
 
+            port)
+                [[ $prev = --guest ]] && return 0
+
+                __vagrant_complete --guest --machine-readable
+
+                return $?
+                ;;
+
+            powershell)
+                [[ $prev =~ ^(-c|--command)$ ]] && return 0
+
+                __vagrant_complete -c --command
+
+                return $?
+                ;;
+
+            provider)
+                __vagrant_complete --install --usable
+
+                return $?
+                ;;
+
             reload)
                 if [[ $prev = --provision-with ]]; then
                     __vagrant_complete_provisioners
@@ -572,7 +601,7 @@ __vagrant(){
 
                 local not_running='' up_options=''
 
-                up_options=$(__vagrant_list_options --destroy-on-error --no-destroy-on-error --no-parallel --no-provision --parallel --provider --provision --provision-with)
+                up_options=$(__vagrant_list_options --destroy-on-error --install-provider --no-destroy-on-error --no-install-provider --no-parallel --no-provision --parallel --provider --provision --provision-with)
                 not_running=$(__vagrant_get_not_running) || return 1
 
                 readarray -t COMPREPLY < <(compgen -W "$up_options $not_running" -- "$cur")
@@ -610,7 +639,10 @@ __vagrant(){
                         ;;
 
                     outdated)
-                        __vagrant_complete --global
+                        [[ $prev =~ ^(--cacert|--capath|--cert)$ ]] && return 0
+
+                        __vagrant_complete --cacert --capath --cert --global --insecure
+
                         return $?
                         ;;
 
@@ -630,17 +662,19 @@ __vagrant(){
 
                         local remove_options=''
 
-                        remove_options=$(__vagrant_list_options --box-version -f --force --provider)
+                        remove_options=$(__vagrant_list_options --all --box-version -f --force --provider)
                         ;;
 
                     update)
+                        [[ $prev =~ ^(--cacert|--capath|--cert)$ ]] && return 0
+
                         if [[ $prev =~ --box ]]; then
                             :
                         elif [[ $prev = --provider ]]; then
                             __vagrant_complete_providers
                             return $?
                         else
-                            __vagrant_complete --box --provider
+                            __vagrant_complete --box --cacert --capath --cert --insecure --provider
                             return $?
                         fi
                         ;;
@@ -664,8 +698,8 @@ __vagrant(){
                         [[ $prev =~ ^(--entry-point|--plugin-source|--plugin-version)$ ]] && return 0
 
                         __vagrant_complete --entry-point --plugin-prerelease \
-                                           --plugin-source --plugin-version \
-                                           --verbose
+                                           --plugin-clean-sources --plugin-source \
+                                           --plugin-version --verbose
                         return $?
                         ;;
                     uninstall|update)
