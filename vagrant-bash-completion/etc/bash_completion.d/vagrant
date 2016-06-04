@@ -36,7 +36,7 @@ __VAGRANT_COMMANDS=(box connect destroy docker-logs docker-run global-status
     reload resume rsync rsync-auto share snapshot ssh ssh-config status
     suspend up version)
 
-__VAGRANT_BOX_COMMANDS=(add help list outdated remove repackage update)
+__VAGRANT_BOX_COMMANDS=(add list outdated remove repackage update)
 
 __VAGRANT_PLUGIN_COMMANDS=(install license list uninstall update)
 
