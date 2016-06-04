@@ -503,7 +503,15 @@ __vagrant(){
                 ;;
 
             package)
-                [[ $prev =~ ^(--base|--output|--include|--vagrantfile)$ ]] && return 0
+                case $prev in
+                    --include|--vagrantfile)
+                        _filedir
+                        return $?
+                        ;;
+                    --base|--output)
+                        return 0
+                        ;;
+                esac
 
                 __vagrant_complete --base --include --output --vagrantfile
 
@@ -619,12 +627,23 @@ __vagrant(){
                 case "$subaction" in
 
                     add)
-                        if [[ $prev =~ ^(--box-version|--cacert|--capath|--cert|--checksum|--checksum-type|--name)$ ]]; then
-                            return 0
-                        elif [[ $prev = --provider ]]; then
-                            __vagrant_complete_providers
-                            return $?
-                        fi
+                        case $prev in
+                            --cacert|--cert)
+                                _filedir
+                                return $?
+                                ;;
+                            --capath)
+                                _filedir -d
+                                return $?
+                                ;;
+                            --provider)
+                                __vagrant_complete_providers
+                                return $?
+                                ;;
+                            --box-version|--checksum|--checksum-type|--name)
+                                return 0
+                                ;;
+                        esac
 
                         __vagrant_complete --box-version -c --cacert --capath \
                                            --cert --checksum --checksum-type \
@@ -639,7 +658,16 @@ __vagrant(){
                         ;;
 
                     outdated)
-                        [[ $prev =~ ^(--cacert|--capath|--cert)$ ]] && return 0
+                        case $prev in
+                            --cacert|--cert)
+                                _filedir
+                                return $?
+                                ;;
+                            --capath)
+                                _filedir -d
+                                return $?
+                                ;;
+                        esac
 
                         __vagrant_complete --cacert --capath --cert --global --insecure
 
@@ -666,7 +694,16 @@ __vagrant(){
                         ;;
 
                     update)
-                        [[ $prev =~ ^(--cacert|--capath|--cert)$ ]] && return 0
+                        case $prev in
+                            --cacert|--cert)
+                                _filedir
+                                return $?
+                                ;;
+                            --capath)
+                                _filedir -d
+                                return $?
+                                ;;
+                        esac
 
                         if [[ $prev =~ --box ]]; then
                             :
