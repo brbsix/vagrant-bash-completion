@@ -312,7 +312,8 @@ __vagrant_list_options(){
     for arg in "$@"; do
 
         for option in "${options[@]}"; do
-            [[ $option = "$arg" ]] && continue 2
+            # skip --include because it can be used multiple times
+            [[ $option != --include && $option = "$arg" ]] && continue 2
         done
 
         args+=("$arg")
