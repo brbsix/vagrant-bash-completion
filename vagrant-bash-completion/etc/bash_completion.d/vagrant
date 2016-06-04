@@ -619,7 +619,7 @@ __vagrant(){
                 case "$subaction" in
 
                     add)
-                        if [[ $prev =~ ^(--box-version|--cacert|--capath|--cert|--checksum|--checksum-type|--name|--provider)$ ]]; then
+                        if [[ $prev =~ ^(--box-version|--cacert|--capath|--cert|--checksum|--checksum-type|--name)$ ]]; then
                             return 0
                         elif [[ $prev = --provider ]]; then
                             __vagrant_complete_providers
