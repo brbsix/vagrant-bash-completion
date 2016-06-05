@@ -34,7 +34,7 @@ Note: You'll need to ensure that *~/.bash_completion.d/vagrant* is sourced in yo
     # Load user completion scripts in ~/.bash_completion.d
     while IFS= read -r path; do
         . "$path"
-    done < <(find ~/.bash_completion.d -type f)
+    done < <(find -L ~/.bash_completion.d -type f)
 
 
 Build Instructions
