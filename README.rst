@@ -40,7 +40,7 @@ Note: You'll need to ensure that *~/.bash_completion.d/vagrant* is sourced in yo
 Build Instructions
 ==================
 
-To build the *.deb* package, run the following from within the repository:
+To build the *.deb* package, ensure ``fakeroot`` is installed then run the following from within the repository:
 
 ``make deb``
 
