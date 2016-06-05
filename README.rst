@@ -4,6 +4,7 @@ This is a fork of Kura's `vagrant-bash-completion`_ script with a number of sign
 * completions for all subcommands and option flags
 * completions for vagrant-share plugin
 * optional dynamic completion if Vagrant is updated or extended (this is slow, but caching is used to speed up future use)
+* support for VAGRANT_HOME (See `#35`_)
 
 Installation
 ============
@@ -69,6 +70,7 @@ Prior Contributors
 +------------------------+-------------------------------------------------------------------------------------------+
 
 .. _vagrant-bash-completion: https://github.com/kura/vagrant-bash-completion
+.. _#35: https://github.com/kura/vagrant-bash-completion/pull/35
 .. _latest release: https://github.com/brbsix/vagrant-bash-completion/releases/latest
 .. _source code repository: https://github.com/brbsix/vagrant-bash-completion/blob/master/LICENSE
 .. _Kura: https://github.com/kura
