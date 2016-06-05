@@ -1,3 +1,10 @@
+This is a fork of Kura's `vagrant-bash-completion`_ script with a number of significant improvements. These are a few of them:
+
+* compatible with Vagrant 1.8.0
+* completions for all subcommands and option flags
+* completions for vagrant-share plugin
+* optional dynamic completion if Vagrant is updated or extended (this is slow, but caching is used to speed up future use)
+
 Installation
 ============
 
@@ -61,6 +68,7 @@ Prior Contributors
 | `Nikita Fedyashev`_    | https://github.com/nfedyashev/bash-it/blob/master/plugins/vagrant.plugins.bash            |
 +------------------------+-------------------------------------------------------------------------------------------+
 
+.. _vagrant-bash-completion: https://github.com/kura/vagrant-bash-completion
 .. _latest release: https://github.com/brbsix/vagrant-bash-completion/releases/latest
 .. _source code repository: https://github.com/brbsix/vagrant-bash-completion/blob/master/LICENSE
 .. _Kura: https://github.com/kura
