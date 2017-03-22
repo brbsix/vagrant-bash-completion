@@ -24,8 +24,10 @@
 # SOFTWARE.
 
 
-# ensure vagrant is on the PATH
-hash vagrant &>/dev/null && {
+# ensure vagrant or vagrant.exe is on PATH
+for vagrant in vagrant vagrant.exe; do
+    hash "$vagrant" &>/dev/null && break
+done && {
 
 # static completions are much faster but less accurate
 __VAGRANT_STATIC_COMPLETION=1
@@ -807,6 +809,8 @@ __vagrant(){
     fi
 }
 
-complete -F __vagrant vagrant
+complete -F __vagrant "$vagrant"
 
 }
+
+unset vagrant
