@@ -36,7 +36,7 @@ __VAGRANT_COMMANDS=(box cap connect destroy docker-logs docker-run
     port powershell provider provision push rdp reload resume rsync
     rsync-auto share snapshot ssh ssh-config status suspend up version)
 
-__VAGRANT_BOX_COMMANDS=(add list outdated remove repackage update)
+__VAGRANT_BOX_COMMANDS=(add list outdated prune remove repackage update)
 
 __VAGRANT_PLUGIN_COMMANDS=(install license list uninstall update)
 
@@ -685,19 +685,38 @@ __vagrant(){
                         return $?
                         ;;
 
+                    prune)
+                        case $prev in
+                            --name)
+                                :
+                                ;;
+                            -p|--provider)
+                                __vagrant_complete_providers
+                                return $?
+                                ;;
+                            *)
+                                __vagrant_complete --dry-run -f --force -n --name -p --provider
+                                return $?
+                                ;;
+                        esac
+                        ;;
+
                     remove)
-                        if [[ $prev = --box-version ]]; then
-                            local __vagrant_versions=''
+                        case $prev in
+                            --box-version)
+                                local __vagrant_versions=''
 
-                            __vagrant_versions=$(__vagrant_get_versions) || return 1
+                                __vagrant_versions=$(__vagrant_get_versions) || return 1
 
-                            readarray -t COMPREPLY < <(compgen -W "$__vagrant_versions" -- "$cur")
+                                readarray -t COMPREPLY < <(compgen -W "$__vagrant_versions" -- "$cur")
 
-                            return 0
-                        elif [[ $prev = --provider ]]; then
-                            __vagrant_complete_providers
-                            return $?
-                        fi
+                                return 0
+                                ;;
+                            --provider)
+                                __vagrant_complete_providers
+                                return $?
+                                ;;
+                        esac
 
                         local remove_options=''
 
@@ -706,6 +725,9 @@ __vagrant(){
 
                     update)
                         case $prev in
+                            --box)
+                                :
+                                ;;
                             --cacert|--cert)
                                 _filedir
                                 return $?
@@ -714,22 +736,20 @@ __vagrant(){
                                 _filedir -d
                                 return $?
                                 ;;
+                            --provider)
+                                __vagrant_complete_providers
+                                return $?
+                                ;;
+                            *)
+                                __vagrant_complete --box --cacert --capath --cert --insecure --provider
+                                return $?
+                                ;;
                         esac
-
-                        if [[ $prev =~ --box ]]; then
-                            :
-                        elif [[ $prev = --provider ]]; then
-                            __vagrant_complete_providers
-                            return $?
-                        else
-                            __vagrant_complete --box --cacert --capath --cert --insecure --provider
-                            return $?
-                        fi
                         ;;
 
                 esac
 
-                if [[ $subaction =~ ^(remove|repackage|update)$ ]]; then
+                if [[ $subaction =~ ^(prune|remove|repackage|update)$ ]]; then
                     local box_list=''
 
                     box_list=$(__vagrant_get_boxes) || return 1
