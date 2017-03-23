@@ -1,6 +1,6 @@
 This is a fork of Kura's `vagrant-bash-completion`_ script with a number of significant improvements. These are a few of them:
 
-* compatible with Vagrant 1.9.2
+* compatible with Vagrant 1.9.3
 * completions for all subcommands and option flags
 * completions for vagrant-share plugin
 * optional dynamic completion if Vagrant is updated or extended (this is slow, but caching is used to speed up future use)
