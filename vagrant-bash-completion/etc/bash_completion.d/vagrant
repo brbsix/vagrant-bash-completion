@@ -96,7 +96,7 @@ __vagrant_get_commands(){
     vagrant_output=$(VAGRANT_NO_COLOR=1 vagrant list-commands 2>/dev/null) || return 1
 
     # `NF != 0` is there solely to insure against any errata appended to list-commands output at a later date
-    vagrant_commands=$(awk '/^$/ {while (getline && NF != 0) print $1}' <<<"$vagrant_output" | sort)
+    vagrant_commands=$(awk '/^\r?$/ {while (getline && NF > 1) print $1}' <<<"$vagrant_output" | sort)
 
     [[ -z $vagrant_commands ]] && return 1
 
@@ -110,7 +110,7 @@ __vagrant_get_environments(){
     # local must be declared beforehand in order to return an accurate exit status here
     vagrant_output=$(VAGRANT_NO_COLOR=1 vagrant global-status 2>/dev/null) || return 1
 
-    vagrant_environments=$(awk '/^-+$/ {while (getline && NF != 0) print $1}' <<<"$vagrant_output")
+    vagrant_environments=$(awk '/^-+\r?$/ {while (getline && NF > 1) print $1}' <<<"$vagrant_output")
 
     [[ -z $vagrant_environments ]] && return 1
 
@@ -141,7 +141,7 @@ __vagrant_get_not_off_global(){
     # local must be declared beforehand in order to return an accurate exit status here
     vagrant_output=$(VAGRANT_NO_COLOR=1 vagrant global-status 2>/dev/null) || return 1
 
-    not_off=$(awk '/^-+$/ {while (getline && NF != 0) if ($4 != "poweroff") print $1}' <<<"$vagrant_output")
+    not_off=$(awk '/^-+\r?$/ {while (getline && NF > 1) if ($4 != "poweroff") print $1}' <<<"$vagrant_output")
 
     [[ -z $not_off ]] && return 1
 
@@ -155,7 +155,7 @@ __vagrant_get_not_off_local(){
     # local must be declared beforehand in order to return an accurate exit status here
     vagrant_output=$(VAGRANT_NO_COLOR=1 vagrant status 2>/dev/null) || return 100
 
-    not_off=$(awk '/^$/ {while (getline && NF != 0) if ($2 != "poweroff") print $1}' <<<"$vagrant_output")
+    not_off=$(awk '/^\r?$/ {while (getline && NF > 1) if ($2 != "poweroff") print $1}' <<<"$vagrant_output")
 
     [[ -z $not_off ]] && return 1
 
@@ -186,7 +186,7 @@ __vagrant_get_not_running_global(){
     # local must be declared beforehand in order to return an accurate exit status here
     vagrant_output=$(VAGRANT_NO_COLOR=1 vagrant global-status 2>/dev/null) || return 1
 
-    not_running=$(awk '/^-+$/ {while (getline && NF != 0) if ($4 != "running") print $1}' <<<"$vagrant_output")
+    not_running=$(awk '/^-+\r?$/ {while (getline && NF > 1) if ($4 != "running") print $1}' <<<"$vagrant_output")
 
     [[ -z $not_running ]] && return 1
 
@@ -201,7 +201,7 @@ __vagrant_get_not_running_local(){
     # local must be declared beforehand in order to return an accurate exit status here
     vagrant_output=$(VAGRANT_NO_COLOR=1 vagrant status 2>/dev/null) || return 100
 
-    not_running=$(awk '/^$/ {while (getline && NF != 0) if ($2 != "running") print $1}' <<<"$vagrant_output")
+    not_running=$(awk '/^\r?$/ {while (getline && NF > 1) if ($2 != "running") print $1}' <<<"$vagrant_output")
 
     [[ -z $not_running ]] && return 1
 
@@ -252,7 +252,7 @@ __vagrant_get_subcommands(){
     # local must be declared beforehand in order to return an accurate exit status here
     vagrant_output=$(VAGRANT_NO_COLOR=1 vagrant help "$1" 2>/dev/null) || return 1
 
-    vagrant_subcommands=$(awk '/^Available subcommands:$/ {while (getline && NF == 1) print $1}' <<<"$vagrant_output")
+    vagrant_subcommands=$(awk '/^Available subcommands:\r?$/ {while (getline && length($1) > 1) print $1}' <<<"$vagrant_output")
     # vagrant_subcommands=$(awk '/^     [a-z]+$/ {print $1}' <<<"$vagrant_output")
 
     [[ -z $vagrant_subcommands ]] && return 1
@@ -267,7 +267,7 @@ __vagrant_get_versions(){
     # local must be declared beforehand in order to return an accurate exit status here
     vagrant_output=$(VAGRANT_NO_COLOR=1 vagrant box list 2>/dev/null) || return 1
 
-    vagrant_versions=$(awk '{sub(")$", "", $NF); print $NF}' <<<"$vagrant_output")
+    vagrant_versions=$(awk '{sub(")\r?$", "", $NF); print $NF}' <<<"$vagrant_output")
 
     [[ -z $vagrant_versions ]] && return 1
 
@@ -281,7 +281,7 @@ __vagrant_get_vms(){
     # local must be declared beforehand in order to return an accurate exit status here
     vagrant_output=$(VAGRANT_NO_COLOR=1 vagrant status 2>/dev/null) || return 1
 
-    vagrant_vms=$(awk '/^$/ {while (getline && NF != 0) print $1}' <<<"$vagrant_output")
+    vagrant_vms=$(awk '/^\r?$/ {while (getline && NF > 1) print $1}' <<<"$vagrant_output")
 
     [[ -z $vagrant_vms ]] && return 1
 
